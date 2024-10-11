@@ -1,24 +1,17 @@
-const { defaults: tsjPreset } = require("ts-jest/presets");
+const { createJsWithBabelPreset } = require('ts-jest')
+
+const tsJestPreset = createJsWithBabelPreset({
+  babelConfig: true,
+  isolatedModules: true,
+  tsconfig: 'tsconfig.spec.json',
+})
 
 /** @type {import('jest').Config} */
 module.exports = {
-  ...tsjPreset,
   verbose: true,
   preset: 'react-native',
   setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],
-  transform: {
-    "^.+\\.(js|jsx|mjs)$": "babel-jest",
-    "^.+\\.(ts|tsx)$": [
-      "ts-jest",
-      {
-        isolatedModules: true,
-        /**
-         * Extend `tsconfig.json` to use `react` jsx instead of `react-native` jsx for ts-jest
-         * See ts-jest setup for react-native: https://kulshekhar.github.io/ts-jest/docs/guides/react-native#typescript-configuration
-         */
-        tsconfig: "tsconfig.spec.json",
-      },
-    ],
-  },
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  transform: tsJestPreset.transform,
   transformIgnorePatterns: [],
 };
